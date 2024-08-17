@@ -15,7 +15,23 @@ Download the pre-trained model from the following link and place it in the `mode
 ### 2. Set Up the Virtual Environment
 
 Create and activate a virtual Python environment:
-
-```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+
+Install the necessary Python packages:
+pip install -r requirements.txt
+
+### 3. Set Up MySQL
+
+Modify all the necessary values for your MySQL database in the upload_chatmodel.py file.
+
+### 4. Run the Chat Model Upload Script
+
+Run the following command to upload the chat model:
+python upload_chatmodel
+
+### 5. Set Up the React Frontend
+
+Navigate to the my-react-app directory and install the required Node.js modules:
+cd my-react-app
+npm install
