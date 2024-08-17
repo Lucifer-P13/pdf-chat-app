@@ -1,21 +1,18 @@
 import './App.css';
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
-
 
 function App() {
   const [question, setQuestion] = useState('');
   const [file, setFile] = useState(null);
   const [answer, setAnswer] = useState('');
   const [pdfFiles, setPdfFiles] = useState([]);
-  const [historyFile, setHistoryFile] = useState(null); // New state for history file
+  const [historyFile, setHistoryFile] = useState(null); 
   const [chatHistory, setChatHistory] = useState([]);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
 
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
@@ -34,7 +31,6 @@ function App() {
   };
 
   useEffect(() => {
-    // Fetch PDF files from MySQL database when the component mounts
     fetchPdfFiles();
   }, []);
 
@@ -57,22 +53,23 @@ function App() {
     try {
       const response = await axios.post('http://localhost:5000/initialize');
       console.log(response.data.message);
+      fetchChatHistory();
     } catch (error) {
       console.error('Error initializing PDFChatBot:', error);
     }
   };
 
   const handleAskQuestion = async () => {
-    setLoading(true); // Set loading to true when starting to fetch the answer
+    setLoading(true); 
     try {
       const response = await axios.post('http://localhost:5000/ask', { question });
       setAnswer(response.data.answer);
-      fetchChatHistory(); // Refresh the chat history after asking a question
+      fetchChatHistory(); 
     } catch (error) {
       console.error('Error asking question:', error);
       setAnswer('Error asking question. Please try again.');
     }
-    setLoading(false); // Set loading to false after getting the answer
+    setLoading(false); 
   };
 
   const handleFileUpload = (event) => {
@@ -90,14 +87,12 @@ function App() {
         }
       });
       console.log('File uploaded successfully:', response.data);
-      // After successful upload, refetch PDF files to update the list
       fetchPdfFiles();
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   };
 
-  // New functions for history file upload
   const handleHistoryFileUpload = (event) => {
     const file = event.target.files[0];
     setHistoryFile(file);
@@ -113,7 +108,7 @@ function App() {
         }
       });
       console.log('History file uploaded successfully:', response.data);
-      fetchChatHistory(); // Refresh the chat history after asking a question
+      fetchChatHistory();
     } catch (error) {
       console.error('Error uploading history file:', error);
     }
@@ -153,63 +148,54 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Chatbot UI</h1>
+      <h1>Interactive PDF Assistant</h1>
       <div className="grid-container">
-        <button onClick={confirmInitialize}>Initialize PDFChatBot</button>
-        <button onClick={openFileModal}>Upload File</button>
-        <button onClick={openHistoryModal}>Upload History</button>
-        <button onClick={handleHistoryDownload}>Download History</button>
+        <button className="btn-primary" onClick={confirmInitialize}>Initialize PDFChatBot</button>
+        <button className="btn-secondary" onClick={openFileModal}>Upload File</button>
+        <button className="btn-secondary" onClick={openHistoryModal}>Upload History</button>
+        <button className="btn-secondary" onClick={handleHistoryDownload}>Download History</button>
       </div>
       
-      {/* <button onClick={handleInitialize}>Initialize PDFChatBot</button> */}
-      <div>
+      <div className="question-container">
         <input
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Enter your question..."
+          className="question-input"
         />
-        <button onClick={handleAskQuestion}>Ask</button>
+        <button className="btn-primary" onClick={handleAskQuestion}>Ask</button>
       </div>
-      {/* <div>
-        <input type="file" onChange={handleFileUpload} />
-        <button onClick={handleUpload}>Upload</button>
-      </div> */}
 
-        {/* History download */}
-      {/* <button onClick={handleHistoryDownload}>Download History</button> */}
-
-      {/* For history upload */}
-      {/* <div>
-        <input type="file" onChange={handleHistoryFileUpload} />
-        <button onClick={handleHistoryUpload}>Upload History</button>
-      </div> */}
       {loading ? (
-        <div>Loading...</div> // Loading view
+        <div className="loading">Loading...</div> 
       ) : (
-        answer && <div><strong>Answer:</strong> {answer}</div>
+        answer && <div className="answer"><strong>Answer:</strong> {answer}</div>
       )}
+
       <h2>Chat History</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Question</th>
-            <th>Answer</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {chatHistory.map((history) => (
-            <tr key={history.id}>
-              <td>{history.id}</td>
-              <td>{history.question}</td>
-              <td>{history.answer}</td>
-              <td>{history.time}</td>
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Question</th>
+              <th>Answer</th>
+              <th>Time</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {chatHistory.map((history) => (
+              <tr key={history.id}>
+                <td>{history.id}</td>
+                <td>{history.question}</td>
+                <td>{history.answer}</td>
+                <td>{history.time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Modal
         isOpen={isFileModalOpen}
@@ -220,8 +206,10 @@ function App() {
       >
         <h2>Upload File</h2>
         <input type="file" onChange={handleFileUpload} />
-        <button onClick={handleUpload}>Upload</button>
-        <button onClick={closeFileModal}>Close</button>
+        <div className="modal-actions">
+          <button className="btn-primary" onClick={handleUpload}>Upload</button>
+          <button className="btn-secondary" onClick={closeFileModal}>Close</button>
+        </div>
       </Modal>
 
       <Modal
@@ -233,11 +221,12 @@ function App() {
       >
         <h2>Upload History</h2>
         <input type="file" onChange={handleHistoryFileUpload} />
-        <button onClick={handleHistoryUpload}>Upload</button>
-        <button onClick={closeHistoryModal}>Close</button>
+        <div className="modal-actions">
+          <button className="btn-primary" onClick={handleHistoryUpload}>Upload</button>
+          <button className="btn-secondary" onClick={closeHistoryModal}>Close</button>
+        </div>
       </Modal>
     </div>
-    
   );
 }
 
