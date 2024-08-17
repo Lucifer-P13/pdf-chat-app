@@ -1,8 +1,21 @@
-download model from https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin
+# Chatbot Application with PDF Integration
 
-Use virtual python environment and run 'upload_chatmodel'
-Install node modules in my-react-app using 'npm Install' command
+## Overview
 
-I used some basic design for frontend part in backend flask and llama.
+This project is a chatbot application that leverages a LLaMA-2 model to interact with users. It uses a Flask backend and a React frontend. The chatbot can process information from PDF documents and stores chat history in a MySQL database.
 
-My program need pdf as data and used two small pdfs which are biodata and CV of my friends.
+## Setup and Installation
+
+### 1. Download the Model
+
+Download the pre-trained model from the following link and place it in the `model` directory:
+
+- [LLaMA-2 7B Chat Model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin)
+
+### 2. Set Up the Virtual Environment
+
+Create and activate a virtual Python environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
