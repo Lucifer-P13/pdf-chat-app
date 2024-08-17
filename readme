@@ -1,0 +1,8 @@
+download model from https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q8_0.bin
+
+Use virtual python environment and run 'upload_chatmodel'
+Install node modules in my-react-app using 'npm Install' command
+
+I used some basic design for frontend part in backend flask and llama.
+
+My program need pdf as data and used two small pdfs which are biodata and CV of my friends.
